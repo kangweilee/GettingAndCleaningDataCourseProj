@@ -1,17 +1,30 @@
-library(data.table)
+---
+title: "CodeBook"
+author: "Kangwei Lee"
+date: "8/1/2020"
+output: html_document
+---
 
-filelocation <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'
-filename <- "HAR Dataset.zip"
+## Use Library
+```{Use Library} 
+ library(data.table)
+```
 
-if (!file.exists(filename)){
-  download.file(filelocation,filename, mode = 'wb')
-  unzip(filename, exdir = getwd())
+
+## Download and Unzip
+```{r dwonload and unzip files}
+ filelocation = 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip'
+if (!file.exists('./UCI HAR Dataset.zip')){
+  download.file(filelocation,'./HAR Dataset.zip', mode = 'wb')
+  unzip("HAR Dataset.zip", exdir = getwd())
 }
 
+```
 
-# Merges the training and the test sets to create one data set
-# Read csv file into f and convert into a single data frame
+## Merges the training and the test sets to create one data set
+## Read csv file into f and convert into a single data frame
 
+```{readfiles.mod1}
 f <- read.csv('./UCI HAR Dataset/features.txt', header = FALSE, sep = ' ')
 f <- as.character(f[,2])
 
@@ -63,4 +76,7 @@ names(d.sub) <- name.new
 ##    with the average 
 d.tidy <- aggregate(d.sub[,3:81], by = list(activity = d.sub$activity, subject = d.sub$subject),FUN = mean)
 write.table(x = d.tidy, file = "d_tidy.txt", row.names = FALSE)
+
+
+```
 
